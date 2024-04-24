@@ -4,6 +4,7 @@ import com.example.memorydb.user.model.UserEntity;
 import com.example.memorydb.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +33,26 @@ public class UserApiController {
     }
 
     @GetMapping(path = "/score")
-    public List<UserEntity> findAllScoreGreaterThan(@RequestParam int score) {
-        return userService.findAllScoreGreaterThan(score);
+    public List<UserEntity> findAllByScoreGreaterThan(@RequestParam int score) {
+        return userService.findAllByScoreGreaterThan(score);
+    }
+
+    @GetMapping(path = "/score-between")
+    public List<UserEntity> findAllByScoreGreaterThanEqualAndScoreLessThanEqual(
+            @RequestParam(name = "first-score") int firstScore,
+            @RequestParam(name = "last-score") int lastScore) {
+        return userService.findAllByScoreGreaterThanEqualAndScoreLessThanEqual(firstScore, lastScore);
+    }
+
+    @GetMapping(path = "/score-query")
+    public List<UserEntity> findByScore(
+            @RequestParam(name = "min") int firstScore,
+            @RequestParam(name = "max") int lastScore) {
+        return userService.findByScore(firstScore, lastScore);
     }
 
     @DeleteMapping(path = "/delete/{userId}")
-    public void delete(@PathVariable(name = "userId") Long id) {
-        userService.delete(id);
+    public void delete(@PathVariable(name = "userId") UserEntity user) {
+        userService.delete(user);
     }
 }

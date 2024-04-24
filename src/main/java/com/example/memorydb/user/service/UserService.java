@@ -12,7 +12,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    @Autowired
     private final UserRepository userRepository;
 
     public UserEntity save(UserEntity user) {
@@ -28,11 +27,19 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public List<UserEntity> findAllScoreGreaterThan(int score) {
-        return userRepository.findAllScoreGreaterThan(score);
+    public List<UserEntity> findAllByScoreGreaterThan(int score) {
+        return userRepository.findAllByScoreGreaterThan(score);
     }
 
-    public void delete(Long id) {
-        userRepository.delete(id);
+    public List<UserEntity> findByScore(int min, int max) {
+        return userRepository.findByScore(min, max);
+    }
+
+    public List<UserEntity> findAllByScoreGreaterThanEqualAndScoreLessThanEqual(int firstScore, int lastScore) {
+        return userRepository.findAllByScoreGreaterThanEqualAndScoreLessThanEqual(firstScore, lastScore);
+    }
+
+    public void delete(UserEntity user) {
+        userRepository.delete(user);
     }
 }
